@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Ezy Scanner</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
+  <style>
+      .pointer { cursor: pointer; }
+  </style>
+
+</head>
+<body ng-app="ezyScannerApp" ng-cloak>
+  <div class="container text-center mt-2" ng-controller="ezyScannerCtrl">
+
+    <camera ng-show="!car && !plate && !loading" class="camera" on-select="getPhoto(photo)"></camera>
+    <!-- <img class="img-fluid" ng-src="{{photo.src}}"> -->
+
+    <img ng-show="loading" class="img-fluid" src="/spinner.gif">
+
+    <div ng-hide="!car && !plate">
+        <h1>Analyzed Data</h1>
+        <ul class="list-group">
+          <li class="list-group-item">Plate: {{car.plate.name}}</li>
+          <li class="list-group-item">Colour: {{car.plate.name}}</li>
+          <li class="list-group-item">Year: {{car.year.name}}</li>
+          <li class="list-group-item">Body Type: {{car.body_type.name}}</li>
+          <li class="list-group-item">Make: {{car.make.name}}</li>
+          <li class="list-group-item">Model: {{car.model.name}}</li>
+        </ul>
+        
+        <h1>EzyReg Data</h1>
+        <ul class="list-group"></ul>
+        <li class="list-group-item">Expiry: {{plate.expiry_date}}</li>
+        <li class="list-group-item">Colour: {{plate.primary_colour}}</li>
+        <li class="list-group-item">Make: {{plate.make}}</li>
+        <li class="list-group-item">Body Type: {{plate.body_type}}</li>
+        <li class="list-group-item">Insurer: {{plate.ctp_insurer}}</li>
+      </ul>
+    </div>
+    
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.js"></script>
+  <script src="app.js"></script>
+  <script src="exif-restorer.js"></script>
+  <script src="camera.js"></script>
+</body>
+</html>
