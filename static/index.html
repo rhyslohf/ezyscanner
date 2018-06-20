@@ -16,7 +16,7 @@
     <camera ng-show="!car && !plate && !loading" class="camera" on-select="getPhoto(photo)"></camera>
 
     <img ng-show="loading" class="img-fluid" src="/spinner.gif">
-    <img ng-show="loading && photo" class="img-thumbnail img-fluid" ng-src="{{photo.src}}"></h2>
+    <img ng-show="photo" class="img-thumbnail img-fluid" ng-src="{{photo.src}}"></h2>
     <div ng-show="error" class="alert alert-danger" role="alert">{{error}}</div>
 
     <div ng-hide="!car && !plate">
@@ -39,6 +39,8 @@
         <li class="list-group-item">Insurer: {{plate.ctp_insurer}}</li>
       </ul>
     </div>
+
+    <div class="pt-5"></div>
 
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
