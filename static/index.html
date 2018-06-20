@@ -17,6 +17,7 @@
     <!-- <img class="img-fluid" ng-src="{{photo.src}}"> -->
 
     <img ng-show="loading" class="img-fluid" src="/spinner.gif">
+    <h2 ng-show="loading && photo">Image loaded... scanning...</h2>
 
     <div ng-hide="!car && !plate">
         <h1>Analyzed Data</h1>
