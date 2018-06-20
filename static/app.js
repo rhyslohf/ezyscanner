@@ -3,10 +3,6 @@ angular.module('ezyScannerApp', [])
   })
   .controller('ezyScannerCtrl', function ($scope, $http) {
 
-    $scope.photos = [];
-
-    
-
     $scope.getPhoto = function (photoPromise) {
       $scope.loading = true;
 
@@ -18,6 +14,8 @@ angular.module('ezyScannerApp', [])
           $scope.plate = response.data.plate;
 
           $scope.loading = false;
+        }, function(response) {
+          $scope.error = response.status + ': ' + response.data;
         });
       });
     };
