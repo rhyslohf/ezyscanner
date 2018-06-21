@@ -23,6 +23,8 @@ angular.module('ezyScannerApp', [])
       }
 
     $scope.getPhoto = function (imageFile) {
+      $scope.loading = true;
+
       var formData = new FormData();
       formData.append('file', imageFile);
       $http({
