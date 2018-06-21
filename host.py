@@ -102,13 +102,12 @@ class RESTHandler(tornado.web.RequestHandler):
             #get image uploaded
             file_body = self.request.files['file'][0]['body']
             img = Image.open(StringIO.StringIO(file_body))
-            img.show()
+            # img.show()
 
             #get base64
             buffer = cStringIO.StringIO()
             img.save(buffer, format="JPEG")
             img_base64_data = base64.b64encode(buffer.getvalue())
-
 
             #make request
             SECRET_KEY = os.environ.get('SECRET_KEY','')
