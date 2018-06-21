@@ -102,7 +102,8 @@ angular.module('ezyScannerApp')
 
         input.on('change', function (event) {
           $scope.onSelect({
-            photo: setPicture(event.target.files)
+            // photo: setPicture(event.target.files),
+            photo: event.target.files[0]
           });
         });
 

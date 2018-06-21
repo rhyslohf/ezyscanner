@@ -12,6 +12,10 @@ import os
 import sys
 from bs4 import BeautifulSoup
 import requests
+import StringIO
+from PIL import Image
+import base64
+import cStringIO
 
 def extract_car_data(data):
     try:
@@ -89,17 +93,31 @@ class RESTHandler(tornado.web.RequestHandler):
         self.set_header("Access-Control-Allow-Methods", ",".join(allowedMethods))
         self.finish()
 
+
     @coroutine
     def post(self):
 
         try:
 
+            #get image uploaded
+            file_body = self.request.files['file'][0]['body']
+            img = Image.open(StringIO.StringIO(file_body))
+            img.show()
+
+            #get base64
+            buffer = cStringIO.StringIO()
+            img.save(buffer, format="JPEG")
+            img_base64 = base64.b64encode(buffer.getvalue())
+            _, img_base64_data = img_base64.split(',')
+
+            """
             #get post data
             # input_json = tornado.escape.json_decode(self.request.body)
             # img_base64 = input_json.get("img_src")
             img_base64 = self.get_argument("image")
-            print img_base64
             _, img_base64_data = img_base64.split(',')
+            print img_base64
+            """
 
             #make request
             SECRET_KEY = os.environ.get('SECRET_KEY','')
