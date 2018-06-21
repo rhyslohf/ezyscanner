@@ -92,34 +92,41 @@ class RESTHandler(tornado.web.RequestHandler):
     @coroutine
     def post(self):
 
-        #get post data
-        input_json = tornado.escape.json_decode(self.request.body)
-        img_base64 = input_json.get("img_src")
-        _, img_base64_data = img_base64.split(',')
+        try:
 
-        #make request
-        SECRET_KEY = os.environ.get('SECRET_KEY','')
-        url = 'https://api.openalpr.com/v2/recognize_bytes?recognize_vehicle=1&country=au&secret_key=%s' % (SECRET_KEY)
-        r = requests.post(url, data = img_base64_data)
+            #get post data
+            # input_json = tornado.escape.json_decode(self.request.body)
+            # img_base64 = input_json.get("img_src")
+            img_base64 = self.get_argument("image")
+            print img_base64
+            _, img_base64_data = img_base64.split(',')
 
-        #extract car data
-        print "Response from recognition lookup: {}".format(r.status_code)
-        car_data = extract_car_data(r.json() or {})
+            #make request
+            SECRET_KEY = os.environ.get('SECRET_KEY','')
+            url = 'https://api.openalpr.com/v2/recognize_bytes?recognize_vehicle=1&country=au&secret_key=%s' % (SECRET_KEY)
+            r = requests.post(url, data = img_base64_data)
 
-        #fetch/extract plate data from car_data.plate.name
-        plate_data = extract_plate_data(car_data.get("plate",{}).get("name") if car_data else None)
+            #extract car data
+            print "Response from recognition lookup: {}".format(r.status_code)
+            car_data = extract_car_data(r.json() or {})
 
-        data = {
-            "car": car_data,
-            "plate": plate_data
-        }
+            #fetch/extract plate data from car_data.plate.name
+            plate_data = extract_plate_data(car_data.get("plate",{}).get("name") if car_data else None)
 
-        if any(data):
-            self.set_status(200)
-            self.finish(data)
+            data = {
+                "car": car_data,
+                "plate": plate_data
+            }
+        except Exception as ex:
+            self.set_status(500)
+            self.finish(ex)
         else:
-            self.set_status(400)
-            self.finish()
+            if any(data):
+                self.set_status(200)
+                self.finish(data)
+            else:
+                self.set_status(400)
+                self.finish()
 
 def main():
     application = tornado.web.Application([

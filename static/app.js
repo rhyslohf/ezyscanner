@@ -8,7 +8,14 @@ angular.module('ezyScannerApp', [])
 
       photoPromise.then(function (imgSrc) {
         $scope.photo = {src: imgSrc};
-        $http.post("/scan", data={"img_src":imgSrc}).then(function(response) {
+        var formData = new FormData();
+        formData.append("image", imgSrc);
+        $http({
+          "url": "/scan",
+          "method": "POST",
+          "headers": {'Content-Type': undefined},
+          data: formData
+        }).then(function(response) {
           // result
           $scope.car = response.data.car;
           $scope.plate = response.data.plate;
