@@ -107,17 +107,8 @@ class RESTHandler(tornado.web.RequestHandler):
             #get base64
             buffer = cStringIO.StringIO()
             img.save(buffer, format="JPEG")
-            img_base64 = base64.b64encode(buffer.getvalue())
-            _, img_base64_data = img_base64.split(',')
+            img_base64_data = base64.b64encode(buffer.getvalue())
 
-            """
-            #get post data
-            # input_json = tornado.escape.json_decode(self.request.body)
-            # img_base64 = input_json.get("img_src")
-            img_base64 = self.get_argument("image")
-            _, img_base64_data = img_base64.split(',')
-            print img_base64
-            """
 
             #make request
             SECRET_KEY = os.environ.get('SECRET_KEY','')
