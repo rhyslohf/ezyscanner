@@ -21,6 +21,7 @@
 
     <img ng-show="loading" class="img-fluid" src="/spinner.gif">
     <img ng-show="photo" class="img-thumbnail img-fluid" ng-src="{{photo.src}}"></h2>
+    <img ng-show="photo_compressed" class="img-thumbnail img-fluid" ng-src="{{photo_compressed.src}}"></h2>
     <div ng-show="error" class="alert alert-danger" role="alert">{{error}}</div>
 
     <div ng-hide="!car && !plate">
