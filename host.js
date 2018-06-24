@@ -14,41 +14,50 @@ var plateToPlateInformation = require('./ezyreg.js')
 app.use('/', express.static(path.join(__dirname, 'static')))
 
 var compressImageBuffer = function(buffer, quality) {
+    console.log("Compressing Image Buffer")
     return new Promise(function(resolve, reject) {
         imagemin.buffer(buffer, {plugins: [imageminPngquant({quality:quality})]})
             .then(function(buffer) {
-                resolve(buffer) 
+                console.log("Compressing Image Buffer, resolve()")
+                resolve(buffer)
             })
             .catch(function(error){
+                console.log("Compressing Image Buffer, reject()")
                 reject(error)
             })
     })
 }
 
 var base64ImageBuffer = function(buffer) {
+    console.log("Converting Image Buffer to Base64")
     return new Promise(function(resolve, reject) {
         try {
             var base64 = buffer.toString("base64")
+            console.log("Converting Image Buffer to Base64, resolve()")
             resolve(base64);
         } catch(ex) {
+            console.log("Converting Image Buffer to Base64, reject()")
             reject(null);
         }
     })
 }
 
 var base64ToPlate = function(base64) {
+    console.log("Converting Base64 Image to Plate Recognition")
     return new Promise(function(resolve, reject) {
         var secret_key = process.env.SECRET_KEY || '';
         var url = 'https://api.openalpr.com/v2/recognize_bytes?limit=1&recognize_vehicle=0&country=au&secret_key=';
-        request.post({'url':url + secret_key, body: base64}, 
+        request.post({'url':url + secret_key, body: base64},
             function(error, response, body) {
                 try {
                     let json = JSON.parse(body)
+                    console.log("Converting Base64 Image to Plate Recognition, resolve()")
                     resolve({
                         number: json["results"][0]["plate"],
-                        confidence: json["results"][0]["confidence"]                        
+                        confidence: json["results"][0]["confidence"]
                     })
                 } catch (ex) {
+                    console.log("Converting Base64 Image to Plate Recognition, resolve(null)")
                     resolve(null)
                 }
             }
@@ -64,7 +73,9 @@ app.post('/scan', upload.single('file'), function (req, res, next) {
         .then(function(plateInformation) {
             res.json(plateInformation)
         })
-        .catch(function() {
+        .catch(function(error) {
+            console.log("/scan 500")
+            console.error(error)
             res.status(500).send()
         })
 })
