@@ -1,1 +1,1 @@
-web: python host.py
+web: node host.js

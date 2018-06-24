@@ -38,7 +38,7 @@ var base64ImageBuffer = function(buffer) {
 
 var base64ToPlate = function(base64) {
     return new Promise(function(resolve, reject) {
-        var secret_key = 'sk_8af55fbf65cf9bcefd219b6a';
+        var secret_key = process.env.SECRET_KEY || '';
         var url = 'https://api.openalpr.com/v2/recognize_bytes?limit=1&recognize_vehicle=0&country=au&secret_key=';
         request.post({'url':url + secret_key, body: base64}, 
             function(error, response, body) {
@@ -79,4 +79,4 @@ app.get('/reg/:plate', function(req, res) {
         })
 });
 
-app.listen(8080, '0.0.0.0', () => console.log('Example app listening on port 8080!'))
+app.listen(process.env.PORT, '0.0.0.0', () => console.log('Example app listening on port 8080!'))
