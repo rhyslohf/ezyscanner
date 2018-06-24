@@ -52,6 +52,7 @@ var base64ToPlate = function(base64) {
                 try {
                     let json = JSON.parse(body)
                     console.log("Converting Base64 Image to Plate Recognition, resolve()")
+                    console.log("Response: "+body)
                     resolve({
                         number: json["results"][0]["plate"],
                         confidence: json["results"][0]["confidence"]
