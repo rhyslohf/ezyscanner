@@ -9,14 +9,31 @@
   <!-- logger -->
   <script src="https://cdn.ravenjs.com/3.26.2/raven.min.js" crossorigin="anonymous"></script>
 
+  <link href="https://fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet">
   <style>
       .pointer { cursor: pointer; }
+
+      .plate {
+        margin: 30px;
+        border: 2px solid black;
+        border-radius: 10px;
+        background-color:white;
+        padding:5px 10px 5px 10px;
+        font-weight:bold;
+        font-family: 'Fjalla One', sans-serif;
+        line-height:1.10;
+      }
+
+      .expiry {
+        font-family: 'Fjalla One', sans-serif;
+      }
   </style>
 
 </head>
 <body ng-app="ezyScannerApp" ng-cloak>
   <div class="container text-center mt-2" ng-controller="ezyScannerCtrl">
 
+    
     <camera ng-show="!car && !plate && !loading" class="camera" on-select="getPhoto(photo)"></camera>
 
     <img ng-show="loading" class="img-fluid" src="/spinner.gif">
@@ -24,25 +41,40 @@
     <!-- <img ng-show="photo_compressed" class="img-thumbnail img-fluid" ng-src="{{photo_compressed.src}}"></h2> -->
     <div ng-show="error" class="alert alert-danger" role="alert">{{error}}</div>
 
-    <div ng-hide="!car && !plate">
-        <h1>Analyzed Data</h1>
-        <ul class="list-group">
-          <li class="list-group-item">Plate: {{car.plate.name}}</li>
-          <li class="list-group-item">Colour: {{car.colour.name}}</li>
-          <li class="list-group-item">Year: {{car.year.name}}</li>
-          <li class="list-group-item">Body Type: {{car.body_type.name}}</li>
-          <li class="list-group-item">Make: {{car.make.name}}</li>
-          <li class="list-group-item">Model: {{car.model.name}}</li>
-        </ul>
-
-        <h1>EzyReg Data</h1>
-        <ul class="list-group"></ul>
-        <li class="list-group-item">Expiry: {{plate.expiry_date}}</li>
-        <li class="list-group-item">Colour: {{plate.primary_colour}}</li>
-        <li class="list-group-item">Make: {{plate.make}}</li>
-        <li class="list-group-item">Body Type: {{plate.body_type}}</li>
-        <li class="list-group-item">Insurer: {{plate.ctp_insurer}}</li>
-      </ul>
+    <div ng-show="plate">
+      <!-- plate -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="plate">
+            <span style="font-size:10vh;">{{plate.plate_number}}</span><div class="clearfix"></div>
+            <span style="font-size:2vh;">SOUTH AUSTRALIA</span>
+          </div>
+        </div>
+      </div>
+  
+      <!-- expiry -->
+      <div class="row">
+        <div class="col-md-12 expiry">
+          <img class="float-left img-fluid" src="tick_green.png" style="width:10vh">
+          <div class="float-left" style="margin:1vh 0 0 2vh">
+            <span style="font-size:5vh;">
+                {{plate.expiry_date}}
+            </span>
+          </div>
+        </div>
+      </div>
+  
+      <!-- other details -->
+      <div class="row pt-3">
+        <div class="col-md-12">
+          <ul class="list-group">
+            <li class="list-group-item">Colour: {{plate.primary_colour}}</li>
+            <li class="list-group-item">Make: {{plate.make}}</li>
+            <li class="list-group-item">Body Type: {{plate.body_type}}</li>
+            <li class="list-group-item">Insurer: {{plate.ctp_insurer}}</li>
+          </ul>
+        </div>
+      </div>
     </div>
 
     <div class="pt-5"></div>

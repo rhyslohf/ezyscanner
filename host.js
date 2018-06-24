@@ -8,6 +8,8 @@ const imagemin = require('imagemin')
 const imageminPngquant = require('imagemin-pngquant')
 var upload = multer()
 
+var plateToPlateInformation = require('./ezyreg.js')
+
 // app.get('/', (req, res) => res.send('Hello World!'))
 app.use('/', express.static(path.join(__dirname, 'static')))
 
@@ -54,16 +56,6 @@ var base64ToPlate = function(base64) {
     })
 }
 
-var plateToPlateInformation = function(plateData) {
-    return new Promise(function(resolve, reject) {
-        //TODO:
-        resolve({
-            plate: plateData["number"],
-            confidence: plateData["confidence"]
-        })
-    })
-}
-
 app.post('/scan', upload.single('file'), function (req, res, next) {
     compressImageBuffer(req.file.buffer, '50')
         .then(base64ImageBuffer)
@@ -76,5 +68,15 @@ app.post('/scan', upload.single('file'), function (req, res, next) {
             res.status(500).send()
         })
 })
+
+app.get('/reg/:plate', function(req, res) {
+    plateToPlateInformation({"number":req.params.plate})
+        .then(function(plateInformation) {
+            res.json(plateInformation)
+        })
+        .catch(function() {
+            res.status(500).send()
+        })
+});
 
 app.listen(8080, '0.0.0.0', () => console.log('Example app listening on port 8080!'))
