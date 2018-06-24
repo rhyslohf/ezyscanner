@@ -79,4 +79,5 @@ app.get('/reg/:plate', function(req, res) {
         })
 });
 
-app.listen(process.env.PORT, '0.0.0.0', () => console.log('Example app listening on port 8080!'))
+var p = process.env.PORT || 8080;
+app.listen(p, () => console.log('Example app listening on port '+p))
