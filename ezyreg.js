@@ -1,6 +1,5 @@
 const request = require('request')
 const cheerio = require('cheerio')
-const utf8 = require('utf8')
 
 var find = function(plateData) {
 
