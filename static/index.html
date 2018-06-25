@@ -30,10 +30,10 @@
   </style>
 
 </head>
+
 <body ng-app="ezyScannerApp" ng-cloak>
   <div class="container text-center mt-2" ng-controller="ezyScannerCtrl">
 
-    
     <camera ng-show="!car && !plate && !loading" class="camera" on-select="getPhoto(photo)"></camera>
 
     <img ng-show="loading" class="img-fluid" src="/spinner.gif">
@@ -51,7 +51,7 @@
           </div>
         </div>
       </div>
-  
+
       <!-- expiry -->
       <div class="row">
         <div class="col-md-12 expiry">
@@ -63,7 +63,7 @@
           </div>
         </div>
       </div>
-  
+
       <!-- other details -->
       <div class="row pt-3">
         <div class="col-md-12">
@@ -90,4 +90,5 @@
   <script src="exif-restorer.js"></script>
   <script src="camera.js"></script>
 </body>
+
 </html>

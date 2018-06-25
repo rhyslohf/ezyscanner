@@ -6,7 +6,10 @@ var find = function(plateData) {
 
   return new Promise(function(resolve, reject) {
     var plate = plateData ? plateData["number"] : null;
-    if (!plate) reject(null);
+    if (!plate) {
+      reject(null);
+      return;
+    }
 
     let cookieJar = request.jar()
 
