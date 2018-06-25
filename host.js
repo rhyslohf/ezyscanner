@@ -15,6 +15,7 @@ app.use('/', express.static(path.join(__dirname, 'static')))
 
 var compressImageBuffer = function(buffer, quality) {
     console.log("Compressing Image Buffer")
+    console.log("Buffer size "+buffer.length/1024+"kb")
     return new Promise(function(resolve, reject) {
         imagemin.buffer(buffer, {plugins: [imageminPngquant({quality:quality})]})
             .then(function(buffer) {
@@ -28,8 +29,9 @@ var compressImageBuffer = function(buffer, quality) {
     })
 }
 
-var base64ImageBuffer = function(buffer) {
+var imageBufferToBase64 = function(buffer) {
     console.log("Converting Image Buffer to Base64")
+    console.log("Buffer size "+buffer.length/1024+"kb")
     return new Promise(function(resolve, reject) {
         try {
             var base64 = buffer.toString("base64")
@@ -44,6 +46,7 @@ var base64ImageBuffer = function(buffer) {
 
 var base64ToPlate = function(base64) {
     console.log("Converting Base64 Image to Plate Recognition")
+    console.log(base64)
     return new Promise(function(resolve, reject) {
         var secret_key = process.env.SECRET_KEY || '';
         var url = 'https://api.openalpr.com/v2/recognize_bytes?limit=1&recognize_vehicle=0&country=au&secret_key=';
@@ -68,11 +71,15 @@ var base64ToPlate = function(base64) {
 
 app.post('/scan', upload.single('file'), function (req, res, next) {
     compressImageBuffer(req.file.buffer, '50')
-        .then(base64ImageBuffer)
+        .then(imageBufferToBase64)
         .then(base64ToPlate)
         .then(plateToPlateInformation)
         .then(function(plateInformation) {
-            res.json(plateInformation)
+            if (plateInformation) {
+                res.json(plateInformation)
+            } else {
+                res.status(404).send()
+            }
         })
         .catch(function(error) {
             console.log("/scan 500")
